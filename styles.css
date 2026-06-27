@@ -1,0 +1,32 @@
+*{box-sizing:border-box}
+:root{--bg:#f4f6f8;--card:#fff;--text:#111827;--muted:#6b7280;--accent:#0f766e;--soft:#ecfdf5;--border:#e5e7eb}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial}
+.app-header{background:linear-gradient(135deg,#0f766e,#115e59);color:white;padding:18px 16px 24px;border-bottom-left-radius:24px;border-bottom-right-radius:24px;display:flex;justify-content:space-between;align-items:flex-start}
+h1,h2,h3{margin-top:0}
+.app-header h1{margin:0;font-size:26px}
+.app-header p{margin:4px 0 0;opacity:.9}
+.version{background:rgba(255,255,255,.18);padding:6px 10px;border-radius:999px;font-size:13px}
+main{padding:14px;max-width:860px;margin:auto}
+.screen{display:none}
+.screen.active{display:block}
+.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:15px;margin:12px 0}
+.hero{background:var(--soft);border-color:#99f6e4}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+label{display:block;font-size:14px;color:var(--muted);margin-bottom:8px}
+input,select,textarea{width:100%;margin-top:5px;padding:12px;border:1px solid var(--border);border-radius:12px;font-size:16px;background:white;color:var(--text)}
+button{border:0;border-radius:12px;padding:12px 14px;font-size:16px;background:var(--accent);color:white;margin:6px 4px 0 0}
+button.secondary,.tile{background:#e5e7eb;color:#111827}
+.tile{text-align:left;font-weight:700;min-height:64px}
+.actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.hidden{display:none}
+.info p{margin:8px 0}
+.checks label{display:flex;align-items:center;gap:9px;color:var(--text)}
+.checks input[type='checkbox']{width:auto}
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0}
+.summary div{background:var(--soft);border:1px solid #ccfbf1;border-radius:16px;padding:12px}
+.summary span{display:block;color:var(--muted);font-size:13px}
+.summary strong{font-size:22px}
+pre{white-space:pre-wrap;font-family:inherit}
+@media(max-width:650px){.grid,.form-grid,.summary{grid-template-columns:1fr}}
+@media print{.app-header,button{display:none}body{background:white}main{max-width:none}.card{border:0}}

@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CoolDiag AI</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0f766e" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <h1>CoolDiag AI</h1>
+      <p>Diagnosi HVAC rapida e professionale</p>
+    </div>
+    <span class="version">v0.5</span>
+  </header>
+
+  <main>
+    <section id="home" class="screen active">
+      <div class="hero card">
+        <h2>Nuova diagnosi</h2>
+        <p>Parti da impianto, misure, controlli visivi e ottieni una valutazione prudente.</p>
+        <button data-screen="plant">Inizia diagnosi</button>
+      </div>
+
+      <div class="grid">
+        <button class="tile" data-screen="toolbox">🧰 Toolbox</button>
+        <button class="tile" data-screen="library">📚 Libreria</button>
+        <button class="tile" data-screen="history">🕘 Storico</button>
+        <button class="tile" data-screen="report">📄 Report</button>
+      </div>
+
+      <div class="card">
+        <h3>Regola professionale</h3>
+        <p>L'app non decide automaticamente di caricare gas. Indica probabilità, controlli mancanti e prossima azione consigliata.</p>
+      </div>
+    </section>
+
+    <section id="plant" class="screen">
+      <h2>Dati impianto</h2>
+      <div class="card form-grid">
+        <label>Cliente <input id="customer" placeholder="Nome cliente" /></label>
+        <label>Luogo <input id="place" placeholder="Indirizzo / cantiere" /></label>
+        <label>Marca <input id="brand" placeholder="Hisense, Daikin..." /></label>
+        <label>Modello <input id="model" placeholder="Codice modello" /></label>
+        <label>Gas
+          <select id="gas">
+            <option>R32</option>
+            <option>R410A</option>
+            <option>R290</option>
+            <option>R454B</option>
+          </select>
+        </label>
+        <label>Tipo macchina
+          <select id="machineType">
+            <option>Mono split</option>
+            <option>Dual split</option>
+            <option>Trial split</option>
+            <option>Quadri split</option>
+            <option>Penta split</option>
+          </select>
+        </label>
+        <label>BTU <input id="btu" placeholder="12000 / 18000..." /></label>
+        <label>Metri tubazione <input id="pipeLength" type="number" step="0.1" /></label>
+      </div>
+      <div class="actions">
+        <button data-screen="home" class="secondary">Indietro</button>
+        <button data-screen="measures">Avanti</button>
+      </div>
+    </section>
+
+    <section id="measures" class="screen">
+      <h2>Misure</h2>
+      <div class="card form-grid">
+        <label>Pressione aspirazione bar <input id="pressure" type="number" step="0.01" value="12.16" /></label>
+        <label>Temp. evaporazione °C <input id="evapTemp" type="number" step="0.1" value="16" /></label>
+        <label>Temp. aspirazione °C <input id="suctionTemp" type="number" step="0.1" value="20.1" /></label>
+        <label>Surriscaldamento K <input id="superheat" type="number" step="0.1" value="4.1" /></label>
+        <label>Temp. ripresa °C <input id="returnAir" type="number" step="0.1" value="26" /></label>
+        <label>Temp. mandata °C <input id="supplyAir" type="number" step="0.1" value="16" /></label>
+        <label>Temp. esterna °C <input id="outdoorTemp" type="number" step="0.1" value="30" /></label>
+        <label>Assorbimento % targa <input id="ampsPercent" type="number" step="1" value="70" /></label>
+      </div>
+
+      <div class="card info">
+        <button id="calcSuperheat" class="secondary">Calcola surriscaldamento</button>
+        <button id="toggleInfo" class="secondary">ℹ️ Info valori</button>
+        <div id="infoPanel" class="hidden">
+          <p><b>Pressione:</b> Testo 549i sul rubinetto tubo grosso.</p>
+          <p><b>Temperatura evaporazione:</b> valore calcolato dall'app Testo con gas corretto.</p>
+          <p><b>Temperatura aspirazione:</b> Testo 115i sul tubo grosso vicino alla valvola.</p>
+          <p><b>Surriscaldamento:</b> aspirazione - evaporazione. Esempio: 20,1 - 16,0 = 4,1 K.</p>
+          <p><b>ΔT aria:</b> ripresa - mandata, misurato con termometro aria.</p>
+          <p><b>Assorbimento:</b> pinza amperometrica True RMS, confrontato con targa/manuale.</p>
+          <p><b>R290:</b> infiammabile. Carica solo a peso e con procedura di sicurezza.</p>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button data-screen="plant" class="secondary">Indietro</button>
+        <button data-screen="checks">Avanti</button>
+      </div>
+    </section>
+
+    <section id="checks" class="screen">
+      <h2>Controlli visivi</h2>
+      <div class="card checks">
+        <label><input type="checkbox" id="dirtyFilter" /> Filtri sporchi</label>
+        <label><input type="checkbox" id="dirtyIndoorCoil" /> Batteria interna sporca</label>
+        <label><input type="checkbox" id="dirtyOutdoorCoil" /> Batteria esterna sporca</label>
+        <label><input type="checkbox" id="fanIssue" /> Ventole anomale</label>
+        <label><input type="checkbox" id="ice" /> Ghiaccio presente</label>
+        <label><input type="checkbox" id="oil" /> Olio su cartelle/raccordi</label>
+        <label><input type="checkbox" id="leak" /> Perdita visibile o sospetta</label>
+        <label><input type="checkbox" id="errorCode" /> Codice errore presente</label>
+        <label>Codice errore <input id="errorText" placeholder="es. E5, U4, F0..." /></label>
+        <label>Note <textarea id="notes" rows="4" placeholder="Sintomi, rumori, interventi fatti..."></textarea></label>
+      </div>
+      <div class="actions">
+        <button data-screen="measures" class="secondary">Indietro</button>
+        <button data-screen="result">Analizza</button>
+      </div>
+    </section>
+
+    <section id="result" class="screen">
+      <h2>Esito diagnosi</h2>
+      <div class="summary">
+        <div><span>Esito</span><strong id="resultStatus">—</strong></div>
+        <div><span>Affidabilità</span><strong id="confidence">—</strong></div>
+        <div><span>Azione</span><strong id="nextAction">—</strong></div>
+      </div>
+
+      <div class="card">
+        <h3>Diagnosi</h3>
+        <p id="diagnosisText">—</p>
+        <h3>Prossimi controlli</h3>
+        <ul id="todoList"></ul>
+      </div>
+
+      <div class="actions">
+        <button data-screen="checks" class="secondary">Indietro</button>
+        <button id="saveDiagnosis" class="secondary">Salva storico</button>
+        <button data-screen="report">Report</button>
+      </div>
+    </section>
+
+    <section id="toolbox" class="screen">
+      <h2>Toolbox HVAC</h2>
+      <div class="card form-grid">
+        <label>Aspirazione °C <input id="tbSuction" type="number" step="0.1" /></label>
+        <label>Evaporazione °C <input id="tbEvap" type="number" step="0.1" /></label>
+        <label>Ripresa °C <input id="tbReturn" type="number" step="0.1" /></label>
+        <label>Mandata °C <input id="tbSupply" type="number" step="0.1" /></label>
+        <label>bar <input id="tbBar" type="number" step="0.01" /></label>
+        <label>micron <input id="tbMicron" type="number" step="1" /></label>
+      </div>
+      <button id="toolboxCalc">Calcola</button>
+      <div id="toolboxOut" class="card">Inserisci i valori e premi Calcola.</div>
+      <button data-screen="home" class="secondary">Home</button>
+    </section>
+
+    <section id="library" class="screen">
+      <h2>Libreria tecnica</h2>
+      <div class="card">
+        <h3>Surriscaldamento</h3>
+        <p>Temperatura aspirazione - temperatura evaporazione. Valori molto alti possono indicare poca alimentazione evaporatore o possibile carenza refrigerante.</p>
+      </div>
+      <div class="card">
+        <h3>ΔT aria</h3>
+        <p>Temperatura ripresa - temperatura mandata. Tipicamente 8-12 °C in raffrescamento, ma dipende da umidità, carico e velocità ventola.</p>
+      </div>
+      <div class="card">
+        <h3>R290</h3>
+        <p><b>Infiammabile.</b> Usare attrezzatura idonea, ventilazione, ricerca perdite e carica a peso.</p>
+      </div>
+      <button data-screen="home" class="secondary">Home</button>
+    </section>
+
+    <section id="history" class="screen">
+      <h2>Storico</h2>
+      <div id="historyList" class="card">Nessuna diagnosi salvata.</div>
+      <button id="clearHistory" class="secondary">Svuota storico</button>
+      <button data-screen="home" class="secondary">Home</button>
+    </section>
+
+    <section id="report" class="screen">
+      <h2>Report</h2>
+      <pre id="reportText" class="card"></pre>
+      <button id="refreshReport">Aggiorna report</button>
+      <button onclick="window.print()" class="secondary">Stampa / salva PDF</button>
+      <button data-screen="home" class="secondary">Home</button>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
