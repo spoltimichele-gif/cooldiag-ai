@@ -24,12 +24,14 @@ function App() {
 
   async function scanBluetooth() {
     try {
-      if (!navigator.bluetooth) {
-        alert("Bluetooth non disponibile in questo browser. Prova da Chrome sul Pixel 9a.");
+      const bluetooth = (navigator as any).bluetooth;
+
+      if (!bluetooth) {
+        alert("Bluetooth non disponibile in questo browser. Prova da Chrome sul Pixel 9a con link HTTPS.");
         return;
       }
 
-      const device = await navigator.bluetooth.requestDevice({
+      const device = await bluetooth.requestDevice({
         acceptAllDevices: true,
       });
 
@@ -85,7 +87,8 @@ function App() {
               <h2>Test strumenti Bluetooth</h2>
               <p>
                 Accendi le Testo 549i / 115i, avvicinale al telefono o al PC e
-                premi il pulsante. Per il test migliore usa Chrome sul Pixel 9a.
+                premi il pulsante. Per il test migliore usa Chrome sul Pixel 9a
+                con il link HTTPS di Netlify.
               </p>
 
               <button className="start-button">Nuova diagnosi</button>
